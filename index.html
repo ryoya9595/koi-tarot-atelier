@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恋詠ノ書 — 恋愛タロット鑑定アトリエ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   恋詠ノ書 — KOIYOMI TAROT ATELIER
+   墨色の夜空 × アンティークゴールド / 占い師の鑑定書工房
+   ============================================================ */
+:root {
+  --ink-0: #07090f;
+  --ink-1: #0c101d;
+  --ink-2: #131a2e;
+  --ink-3: #1c2440;
+  --gold: #c9a86a;
+  --gold-bright: #e9d3a0;
+  --gold-dim: #8a7448;
+  --moon: #aab4d4;
+  --text: #d8dcea;
+  --text-dim: #7d86a6;
+  --crimson: #b04a5a;
+  --ok: #7bb79a;
+
+  --serif-jp: "Shippori Mincho B1", "Hiragino Mincho ProN", serif;
+  --serif-en: "Cormorant Garamond", Georgia, serif;
+  --display-en: "Cinzel", "Cormorant Garamond", serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--serif-jp);
+  background: var(--ink-1);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+/* ---------- 背景レイヤー ---------- */
+#stars {
+  position: fixed; inset: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0; pointer-events: none;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(201,168,106,.10), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 85% 110%, rgba(50,68,130,.18), transparent 65%),
+    linear-gradient(180deg, var(--ink-0) 0%, var(--ink-1) 38%, #0a0e1b 100%);
+  pointer-events: none;
+}
+.grain {
+  position: fixed; inset: -50%;
+  width: 200%; height: 200%;
+  z-index: 50; pointer-events: none;
+  opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+  animation: grain-shift 9s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(-2%,2%); }
+  40% { transform: translate(2%,-1%); }
+  60% { transform: translate(-1%,-2%); }
+  80% { transform: translate(1%,2%); }
+}
+
+.wrap { position: relative; z-index: 1; }
+
+/* ---------- ヘッダー ---------- */
+.site-header {
+  text-align: center;
+  padding: 40px 24px 20px;
+  animation: screen-in 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.title-ornament-top, .title-ornament-bottom {
+  width: 1px; height: 44px; margin: 0 auto;
+  background: linear-gradient(180deg, transparent, var(--gold));
+  position: relative;
+}
+.title-ornament-bottom { background: linear-gradient(180deg, var(--gold), transparent); }
+.title-ornament-top::after, .title-ornament-bottom::before {
+  content: ""; position: absolute; left: 50%;
+  width: 7px; height: 7px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 1px solid var(--gold);
+}
+.title-ornament-top::after { bottom: -4px; }
+.title-ornament-bottom::before { top: -4px; }
+
+.app-title {
+  font-size: clamp(34px, 5.5vw, 52px);
+  font-weight: 700;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  color: var(--gold-bright);
+  margin: 20px 0 12px;
+  text-shadow: 0 0 34px rgba(201,168,106,.34);
+}
+.app-title-en {
+  font-family: var(--display-en);
+  font-size: 11px;
+  letter-spacing: .5em;
+  text-indent: .5em;
+  color: var(--gold-dim);
+  margin-bottom: 14px;
+}
+.app-sub {
+  font-size: 13px;
+  letter-spacing: .14em;
+  color: var(--text-dim);
+}
+.free-badge {
+  display: inline-block;
+  margin-top: 16px;
+  font-family: var(--serif-jp);
+  font-size: 11.5px;
+  letter-spacing: .24em;
+  text-indent: .24em;
+  color: var(--gold);
+  border: 1px solid rgba(201,168,106,.45);
+  border-radius: 100px;
+  padding: 7px 20px;
+}
+
+/* ---------- レイアウト ---------- */
+.container {
+  max-width: 1200px;
+  margin: 14px auto 60px;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 460px) 1fr;
+  gap: 26px;
+  align-items: start;
+}
+@media (max-width: 940px) { .container { grid-template-columns: 1fr; } }
+
+/* ---------- カード（面） ---------- */
+.card {
+  background: linear-gradient(165deg, rgba(28,36,64,.5), rgba(12,16,29,.72));
+  border: 1px solid rgba(201,168,106,.28);
+  padding: 32px 30px 28px;
+  position: relative;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 30px 70px rgba(0,0,0,.45);
+}
+.card::before, .card::after {
+  content: ""; position: absolute;
+  width: 18px; height: 18px;
+  border-color: var(--gold); border-style: solid;
+}
+.card::before { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
+.card::after  { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+
+.card-kicker {
+  text-align: center;
+  font-size: 11.5px;
+  letter-spacing: .4em;
+  text-indent: .4em;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.card-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-indent: .2em;
+  color: var(--gold-bright);
+  margin-bottom: 4px;
+}
+.card-title .en {
+  display: block;
+  font-family: var(--display-en);
+  font-size: 9.5px;
+  letter-spacing: .34em;
+  text-indent: .34em;
+  color: var(--gold-dim);
+  margin-top: 8px;
+  font-weight: 400;
+}
+.card-rule {
+  width: 120px; height: 1px;
+  margin: 16px auto 26px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  position: relative;
+}
+.card-rule::after {
+  content: ""; position: absolute; left: 50%; top: -3px;
+  width: 6px; height: 6px;
+  transform: translateX(-50%) rotate(45deg);
+  border: 1px solid var(--gold);
+  background: var(--ink-1);
+}
+
+/* ---------- fieldset（節） ---------- */
+.block {
+  border: 1px solid rgba(201,168,106,.18);
+  background: linear-gradient(170deg, rgba(28,36,64,.26), rgba(12,16,29,.4));
+  padding: 20px 20px 22px;
+  margin-bottom: 20px;
+  position: relative;
+}
+.block::before {
+  content: ""; position: absolute; top: -1px; left: 24px;
+  width: 40px; height: 1px; background: var(--gold);
+}
+.block-legend {
+  font-size: 12px;
+  letter-spacing: .3em;
+  text-indent: .3em;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.block-note {
+  font-size: 11.5px;
+  line-height: 1.9;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+  background: rgba(7,9,15,.4);
+  border: 1px dashed rgba(201,168,106,.24);
+  padding: 10px 12px;
+  margin-top: 12px;
+}
+.block-note strong { color: var(--moon); font-weight: 600; }
+.mini-status { font-size: 11.5px; letter-spacing: .04em; margin-top: 8px; white-space: pre-line; line-height: 1.8; }
+
+/* ---------- フィールド ---------- */
+.field { display: block; margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+.field-label {
+  display: block;
+  font-size: 11.5px;
+  letter-spacing: .16em;
+  color: var(--moon);
+  margin-bottom: 7px;
+}
+.field-label small { color: var(--text-dim); letter-spacing: .04em; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 460px) { .row2 { grid-template-columns: 1fr; } }
+
+input[type="text"], textarea, select {
+  width: 100%;
+  background: rgba(7,9,15,.6);
+  border: 1px solid var(--ink-3);
+  border-bottom-color: rgba(201,168,106,.4);
+  color: var(--text);
+  font-family: var(--serif-jp);
+  font-size: 14.5px;
+  letter-spacing: .06em;
+  padding: 11px 13px;
+  outline: none;
+  transition: border-color .3s, box-shadow .3s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px rgba(201,168,106,.2), 0 6px 24px rgba(201,168,106,.07);
+}
+input::placeholder, textarea::placeholder { color: #4a5270; }
+textarea { resize: vertical; min-height: 92px; line-height: 1.9; }
+select { color-scheme: dark; cursor: pointer; }
+select option { background: var(--ink-2); color: var(--text); }
+
+/* ---------- チップ（ラジオ置き換え） ---------- */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips label {
+  flex: 1 1 auto;
+  text-align: center;
+  font-family: var(--serif-jp);
+  font-size: 13px;
+  letter-spacing: .1em;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--ink-3);
+  padding: 9px 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: all .3s;
+}
+.chips label:hover { border-color: var(--gold-dim); color: var(--text); }
+.chips input { display: none; }
+.chips label:has(input:checked) {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(201,168,106,.1);
+  box-shadow: 0 0 18px rgba(201,168,106,.12) inset;
+}
+
+/* ---------- 視点トグル（チェックボックス） ---------- */
+.toggle-line {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--text);
+  padding: 11px 12px;
+  border: 1px solid var(--ink-3);
+  margin-top: 9px;
+  cursor: pointer;
+  user-select: none;
+  transition: all .3s;
+  line-height: 1.6;
+}
+.toggle-line:hover { border-color: var(--gold-dim); }
+.toggle-line input { display: none; }
+.toggle-line .mark {
+  flex: 0 0 auto;
+  width: 18px; height: 18px;
+  border: 1px solid var(--gold-dim);
+  position: relative;
+  margin-top: 1px;
+  transition: all .3s;
+}
+.toggle-line .mark::after {
+  content: ""; position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: solid var(--ink-0);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+}
+.toggle-line:has(input:checked) {
+  border-color: var(--gold);
+  background: rgba(201,168,106,.07);
+}
+.toggle-line:has(input:checked) .mark { background: var(--gold); border-color: var(--gold); }
+.toggle-line:has(input:checked) .mark::after { transform: rotate(45deg) scale(1); }
+
+/* ---------- ボタン ---------- */
+.btn-primary {
+  display: block; width: 100%;
+  margin-top: 22px;
+  font-family: var(--serif-jp);
+  font-size: 15px; font-weight: 700;
+  letter-spacing: .28em; text-indent: .28em;
+  color: #4a2f08;
+  background: linear-gradient(180deg, #ffeec1 0%, #f1cf86 46%, #dcae58 100%);
+  border: none; border-radius: 100px;
+  padding: 16px 28px;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: transform .3s cubic-bezier(.34,1.7,.5,1), box-shadow .35s, filter .3s;
+  box-shadow:
+    0 12px 28px rgba(201,168,106,.42),
+    0 1px 0 rgba(255,255,255,.7) inset,
+    0 -7px 16px rgba(138,116,72,.32) inset;
+}
+.btn-primary::before {
+  content: ""; position: absolute; top: 0; left: -70%;
+  width: 55%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.7), transparent);
+  transform: skewX(-18deg);
+  animation: btn-shimmer 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btn-shimmer {
+  0%, 55% { left: -70%; }
+  100% { left: 140%; }
+}
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  filter: brightness(1.05) saturate(1.12);
+  box-shadow:
+    0 18px 40px rgba(201,168,106,.52),
+    0 0 24px rgba(233,211,160,.45),
+    0 1px 0 rgba(255,255,255,.8) inset,
+    0 -7px 16px rgba(138,116,72,.32) inset;
+}
+.btn-primary:active:not(:disabled) { transform: translateY(-1px) scale(.98); transition-duration: .09s; }
+.btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+
+.btn-ghost {
+  font-family: var(--serif-jp);
+  font-size: 12.5px;
+  letter-spacing: .16em; text-indent: .16em;
+  color: var(--gold);
+  background: transparent;
+  border: 1px solid rgba(201,168,106,.45);
+  padding: 11px 18px;
+  cursor: pointer;
+  transition: all .3s;
+}
+.btn-ghost:hover:not(:disabled) { background: rgba(201,168,106,.1); border-color: var(--gold); color: var(--gold-bright); }
+.btn-ghost:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ---------- 出力パネル ---------- */
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.status {
+  font-size: 12.5px; letter-spacing: .04em;
+  color: var(--text-dim);
+  min-height: 1.5em; margin-bottom: 12px; line-height: 1.7;
+}
+.status.error { color: var(--crimson); }
+.status.ok { color: var(--gold-bright); }
+
+.steps {
+  display: none;
+  font-size: 12px; line-height: 2; letter-spacing: .02em;
+  color: var(--text-dim);
+  background: rgba(7,9,15,.4);
+  border: 1px dashed rgba(201,168,106,.24);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+.steps strong { color: var(--moon); }
+.steps a { color: var(--gold); }
+.steps .hint { color: #667; }
+
+#output {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(7,9,15,.55);
+  border: 1px solid rgba(201,168,106,.24);
+  color: var(--text);
+  padding: 20px;
+  min-height: 220px;
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: .02em;
+  position: relative;
+}
+
+/* ---------- 納品前チェック ---------- */
+.checker { margin-top: 26px; }
+.check-item {
+  font-size: 12.5px; line-height: 1.7;
+  letter-spacing: .02em;
+  padding: 9px 13px;
+  margin-top: 8px;
+  border-left: 2px solid;
+  background: rgba(7,9,15,.4);
+}
+.check-item.ok   { color: var(--ok); border-color: var(--ok); }
+.check-item.warn { color: #d98b93; border-color: var(--crimson); background: rgba(176,74,90,.08); }
+.check-item.info { color: var(--moon); border-color: var(--gold-dim); }
+
+.footer {
+  text-align: center;
+  padding: 20px 0 40px;
+  font-family: var(--display-en);
+  font-size: 9.5px;
+  letter-spacing: .5em; text-indent: .5em;
+  color: #444d6e;
+  position: relative; z-index: 1;
+}
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="wrap">
+
+  <header class="site-header">
+    <div class="title-ornament-top"></div>
+    <h1 class="app-title">恋詠ノ書</h1>
+    <p class="app-title-en">KOIYOMI — TAROT ATELIER</p>
+    <p class="app-sub">フォームに書き込むだけで、そのまま納品できる恋愛タロット鑑定書を編みます</p>
+    <span class="free-badge">完全無料・登録不要</span>
+  </header>
+
+  <div class="container">
+
+    <!-- ============ 入力パネル ============ -->
+    <div class="card">
+      <p class="card-kicker">— 鑑定の下書き —</p>
+      <h2 class="card-title">鑑定内容の入力<span class="en">COMPOSE</span></h2>
+      <div class="card-rule"></div>
+
+      <!-- 占い方 -->
+      <div class="block">
+        <p class="block-legend">占い方</p>
+        <div class="chips">
+          <label><input type="radio" name="mode" value="free" checked>相談に沿って占う</label>
+          <label><input type="radio" name="mode" value="fixed">固定テーマで占う</label>
+        </div>
+        <div id="themeField" style="display:none; margin-top:14px;">
+          <label class="field">
+            <span class="field-label">占いテーマ <small>（1行に1つずつ）</small></span>
+            <textarea id="theme" rows="4" style="min-height:80px;" placeholder="例：&#10;彼の気持ち&#10;二人の現在&#10;二人の未来"></textarea>
+          </label>
+          <div class="block-note">
+            商品に設定しているテーマを<strong>1行に1つずつ</strong>書いてください（何件でもOK）。<br>
+            テーマの数だけ、鑑定書に【〇〇について】の項目が作られます。
+          </div>
+          <div class="mini-status" id="themeCount"></div>
+        </div>
+      </div>
+
+      <!-- 相談者さま -->
+      <div class="block">
+        <p class="block-legend">相談者さま</p>
+        <label class="field">
+          <span class="field-label">お名前 <small>（ニックネーム可）</small></span>
+          <input type="text" id="cname" placeholder="例：さくら">
+        </label>
+        <div class="row2">
+          <label class="field">
+            <span class="field-label">性別</span>
+            <select id="cgender">
+              <option value="">未入力</option>
+              <option>女性</option><option>男性</option><option>その他</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">年齢</span>
+            <input type="text" id="cage" placeholder="例：28歳（任意）">
+          </label>
+        </div>
+        <div class="row2">
+          <label class="field">
+            <span class="field-label">生年月日 <small>（占いに使用）</small></span>
+            <input type="text" id="cbirth" placeholder="例：1995年4月10日（任意）">
+          </label>
+          <label class="field">
+            <span class="field-label">生まれた時間</span>
+            <input type="text" id="cbtime" placeholder="例：午前10時ごろ（任意）">
+          </label>
+        </div>
+      </div>
+
+      <!-- お相手さま -->
+      <div class="block">
+        <p class="block-legend">お相手さま</p>
+        <label class="field">
+          <span class="field-label">お名前 <small>（ニックネーム可）</small></span>
+          <input type="text" id="pname" placeholder="例：Tさん">
+        </label>
+        <div class="row2">
+          <label class="field">
+            <span class="field-label">性別</span>
+            <select id="pgender">
+              <option value="">未入力</option>
+              <option>男性</option><option>女性</option><option>その他</option>
+            </select>
+          </label>
+          <label class="field">
+            <span class="field-label">年齢</span>
+            <input type="text" id="page_" placeholder="例：30代前半（任意）">
+          </label>
+        </div>
+        <div class="row2">
+          <label class="field">
+            <span class="field-label">生年月日 <small>（相性鑑定に使用）</small></span>
+            <input type="text" id="pbirth" placeholder="例：1993年8月22日（任意）">
+          </label>
+          <label class="field">
+            <span class="field-label">生まれた時間</span>
+            <input type="text" id="pbtime" placeholder="例：不明でもOK（任意）">
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label">お二人のご関係</span>
+          <input type="text" id="relation" placeholder="例：職場の同僚、元恋人、SNSで知り合った など">
+        </label>
+      </div>
+
+      <!-- ご相談内容 -->
+      <div class="block">
+        <p class="block-legend">ご相談内容</p>
+        <label class="field">
+          <span class="field-label" id="contentLabel">占ってほしい内容 <small>（できるだけ具体的に）</small></span>
+          <textarea id="content" placeholder="例：最近彼からの連絡が減っていて不安です。彼が今どう思っているのか、これからどうなっていくのかを知りたいです。"></textarea>
+        </label>
+        <div class="block-note">
+          情報が1つ増えるだけで、鑑定の深さと的確さが変わります。<br>
+          「いつ頃から」「どんな出来事があったか」「今どんな気持ちか」など、伺った内容はできるだけそのまま入れてください。
+        </div>
+      </div>
+
+      <!-- 取り入れる視点 -->
+      <div class="block">
+        <p class="block-legend">鑑定に取り入れる視点</p>
+        <p style="font-size:11.5px; color:var(--text-dim); line-height:1.8; margin-bottom:4px;">
+          タロットを主軸に、下記の視点を組み合わせて深みを出せます（オンにした分だけ反映されます）。
+        </p>
+        <label class="toggle-line"><input type="checkbox" id="mPsych" checked><span class="mark"></span>心理学の視点（気持ちの背景をカウンセラー目線で読み解く）</label>
+        <label class="toggle-line"><input type="checkbox" id="mBirth"><span class="mark"></span>生年月日からの性格・恋愛傾向（生年月日欄が必要）</label>
+        <label class="toggle-line"><input type="checkbox" id="mAstro"><span class="mark"></span>西洋占星術（星座からの恋愛傾向・相性）</label>
+        <label class="toggle-line"><input type="checkbox" id="mNumero"><span class="mark"></span>数秘術（運命数から見る恋愛パターン・相性）</label>
+        <label class="toggle-line"><input type="checkbox" id="mShichu"><span class="mark"></span>四柱推命の要素（生年月日から気質・相性を読む）</label>
+        <div id="shichuField" style="display:none;">
+          <div class="block-note">
+            <strong>四柱推命について：</strong>生年月日から命式（年柱・月柱・日柱）をAIが推定して鑑定します。<br>
+            節入り（月の変わり目）前後の生まれの方は計算がずれることがあります。正確さ重視の場合は無料の四柱推命サイトで命式を調べ、下欄に貼り付けてください。貼り付けがあれば、その命式をそのまま使います。
+          </div>
+          <label class="field" style="margin-top:12px;">
+            <span class="field-label">命式 <small>（分かれば貼り付け・空欄でもOK）</small></span>
+            <textarea id="meishiki" rows="3" style="min-height:64px;" placeholder="例：&#10;相談者　年柱：乙亥／月柱：庚辰／日柱：戊寅&#10;お相手　年柱：癸酉／月柱：庚申／日柱：丙午"></textarea>
+          </label>
+        </div>
+        <div class="block-note">
+          <strong>視点は多いほど良いわけではありません。タロット＋2つまでが目安です。</strong><br>
+          根拠となる情報がある視点だけを選ぶと、1つ1つの読み解きが深くなり、満足度が上がります。
+        </div>
+        <div class="mini-status" id="viewsNote" style="color:var(--crimson);"></div>
+      </div>
+
+      <!-- 鑑定ボリューム -->
+      <div class="block">
+        <p class="block-legend">鑑定ボリューム</p>
+        <div class="chips">
+          <label><input type="radio" name="volume" value="ライト">ライト</label>
+          <label><input type="radio" name="volume" value="スタンダード" checked>スタンダード</label>
+          <label><input type="radio" name="volume" value="フル">フル</label>
+        </div>
+        <div class="block-note">
+          ・ライト：約800〜1000文字（要点をシンプルに）<br>
+          ・スタンダード：約1000〜1500文字（心理や流れを丁寧に）<br>
+          ・フル：約1500〜2000文字（深掘り＋感情整理＋行動ヒント）<br>
+          ※文字数は目安。精度を最優先とし、無理な引き延ばしはしません。
+        </div>
+        <label class="toggle-line" style="margin-top:12px;"><input type="checkbox" id="cardnames"><span class="mark"></span>鑑定書にカード名を併記する（通常はオフのまま）</label>
+      </div>
+
+      <button class="btn-primary" id="generateBtn">鑑定用プロンプトを編む</button>
+    </div>
+
+    <!-- ============ 出力パネル ============ -->
+    <div class="card">
+      <p class="card-kicker">— コピーしてAIに渡すだけ —</p>
+      <h2 class="card-title">鑑定用プロンプト<span class="en">SUMMON</span></h2>
+      <div class="card-rule"></div>
+
+      <div class="toolbar">
+        <button class="btn-ghost" id="copyOpenGptBtn" disabled>コピーしてChatGPTを開く</button>
+        <button class="btn-ghost" id="copyOpenClaudeBtn" disabled>コピーしてClaudeを開く</button>
+        <button class="btn-ghost" id="copyBtn" disabled>コピーのみ</button>
+      </div>
+      <div class="status" id="status">左のフォームに書き込んで「鑑定用プロンプトを編む」を押してください（費用は一切かかりません）。</div>
+
+      <div class="steps" id="freeSteps">
+        <strong>納品までの4ステップ</strong><br>
+        ① 上の「コピーしてChatGPTを開く」を押す（コピーと同時にChatGPTが開きます。<a href="https://claude.ai/" target="_blank" rel="noopener">Claude</a>派の方はClaudeボタンでOK）<br>
+        ② 開いたチャットに貼り付けて送信 → 鑑定書が出てきます<br>
+        ③ 出てきた鑑定書を、下の「納品前チェック」に貼り付けて確認<br>
+        ④ ご自身の目で読み返し、気になる所を自分の言葉に整えてから納品<br>
+        <span class="hint">鑑定書が出たあと、同じチャットにこう送ると続きが作れます：<br>
+        ・「<strong>提案３</strong>」→ 相談者さまにそのまま送れる追加鑑定のご案内（3件）。次のご購入につながる導線です<br>
+        ・「<strong>提案５</strong>」→ 自分用の販売準備メモ（5件）。納品文には含めません</span>
+      </div>
+
+      <div id="output"></div>
+
+      <!-- 納品前チェック -->
+      <div class="checker" id="checkerBox">
+        <p class="card-kicker" style="margin-top:8px;">— 貼るだけで納品ルールを自動確認 —</p>
+        <h2 class="card-title">納品前チェック<span class="en">VERIFY</span></h2>
+        <div class="card-rule"></div>
+        <p style="font-size:12px; color:var(--text-dim); line-height:1.8; margin-bottom:10px;">
+          AIが出力した鑑定書をここに貼り付けて「チェックする」を押すと、納品ルールが守られているかを自動で確認します（通信なし・無料）。
+        </p>
+        <textarea id="checkInput" style="min-height:140px;" placeholder="ここにAIが出力した鑑定書を貼り付けてください"></textarea>
+        <div class="toolbar" style="margin-top:10px;">
+          <button class="btn-ghost" id="checkBtn">チェックする</button>
+        </div>
+        <div id="checkResults"></div>
+        <div class="block-note" style="margin-top:12px;">
+          <strong>チェックがすべて通っても、そのまま納品せず、必ず一度ご自身の目で読み返してください。</strong><br>
+          気になる表現をご自分の言葉に直すことで「あなたの鑑定書」として自然になり、相談者さまの満足度も上がります。AIはあくまで下書き係。最後のひと筆を入れるのは占い師であるあなたです。
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">KOIYOMI — TAROT ATELIER</div>
+</div>
+
+<script>
+"use strict";
+
+/* ---------- 星空 ---------- */
+(function initStars() {
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  let stars = [], w, h;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    stars = Array.from({ length: Math.floor((w * h) / 9000) }, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 1.3 + 0.2,
+      tw: Math.random() * Math.PI * 2,
+      sp: 0.004 + Math.random() * 0.012,
+      drift: 0.02 + Math.random() * 0.05,
+    }));
+  }
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      s.tw += s.sp; s.y -= s.drift;
+      if (s.y < -2) { s.y = h + 2; s.x = Math.random() * w; }
+      const alpha = 0.25 + Math.abs(Math.sin(s.tw)) * 0.6;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = s.r > 1.1 ? `rgba(233,211,160,${alpha})` : `rgba(190,200,230,${alpha * 0.8})`;
+      ctx.fill();
+    }
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener("resize", resize);
+  resize(); frame();
+})();
+
+/* ============================================================
+   鑑定プロンプト生成ロジック
+   ============================================================ */
+const FORM_STORAGE = "koiyomi_form";
+
+const SYSTEM_PROMPT = `あなたは「恋愛タロット占い師」です。恋愛の悩みに寄り添い、心理カウンセラーの視点も交えてタロット鑑定を行います。
+
+# 役割と文体
+- 出力結果は、ココナラ等でそのまま納品可能な【名前入り鑑定書】形式で作成する
+- テンプレート感は避け、手書きの鑑定書のような温かみのある文章と構成で仕上げる
+- 罫線や定型の区切り線（---、＝＝＝、⸻ など）は使用せず、自然な段落構成・改行・絵文字を用いて読みやすく整える
+- 断定的な表現（例：「必ず」「絶対に」など）は避け、カードから感じられる「可能性」「流れ」として穏やかに伝える
+- マークダウン記法（#、**、- など）は使わない。納品先のメッセージ欄にそのまま貼れるプレーンな文章にする
+
+# 鑑定ルール
+- 入力情報に不足や曖昧な点がある場合でも、勝手な補完や断定は行わず、読み取れる範囲の流れとして鑑定する
+- 年齢や関係性が未入力でも鑑定は可能
+- カード名は基本的に明示せず、象徴やイメージとして文章に自然に溶け込ませる
+- 入力に「カード名を併記する」と指定があった場合のみカード名を併記する
+
+# 鑑定ボリューム
+- ライト：約800〜1000文字（要点をシンプルに）
+- スタンダード：約1000〜1500文字（心理や流れを丁寧に）
+- フル：約1500〜2000文字（深掘り＋感情整理＋行動ヒント）
+※文字数はあくまで目安。最優先は鑑定の精度と読みやすさであり、文字数を満たすために内容を引き延ばしたり、同じ内容を言い換えて繰り返したりしない。
+※指定がない場合はスタンダードとする。
+
+# 鑑定の深さの調整（重要）
+- 最優先は、相談内容に対して的確で、相談者に満足していただける鑑定を届けること
+- 一方で、1通の鑑定で相談者の疑問すべてに答え切ろうとせず、今回の相談内容・テーマの範囲に集中する
+- テーマの範囲外の話題（相性、細かい時期、お相手の過去、周囲の人間関係など）に気づいても、本文では深く踏み込まず、必要であれば「次の鑑定のご提案」で自然に触れるに留める
+- ただし出し惜しみと感じさせないこと。今回のテーマ・相談内容については手を抜かず丁寧に鑑定する
+
+# 鑑定結果の出力順（最重要・厳守）
+鑑定結果は、必ず以下の順番で出力すること。順番の入れ替え・省略・前後は禁止。
+
+① 鑑定文冒頭の固定文（一字一句この通りに出力する）
+お待たせいたしました。
+鑑定が終わりましたので、結果を送付させていただきます。
+ご確認をお願いします。
+
+② 今回の鑑定で読み解く【鑑定の軸・項目の説明】
+相談内容・テーマをもとに、今回どの観点で読み解くのかを、箇条書きを含めた自然な文章で説明する。
+（例：「今回のご相談内容から、
+・〇〇さんの気持ち
+・二人の現在の関係性
+・今後約3ヶ月の流れ
+この3つを軸に読み解いていきました。」）
+
+③ 鑑定書の題名
+例：🔮恋愛タロット鑑定書 ～〇〇さん～🔮
+
+④ 鑑定本文（占い項目ごとに分けて記載）
+
+# 鑑定書の構成ルール
+- 鑑定本文は占い項目ごとに分けて出力する
+- 各占い項目の見出しは、必ず【〇〇について】の形式で明確に記載する（例：【彼の気持ちについて】【二人の現在の関係性について】【今後の流れについて】など）
+- 各項目ごとに心理的背景と感情の流れを丁寧に説明する
+- 本文では「あなた」という表現は使わず、必ず相談者名で語りかける
+- 行動アドバイスは選択肢として提示し、相談者の意思を尊重する
+
+# 取り入れる視点（入力で指定されたものだけ反映する）
+入力情報の【取り入れる視点】に挙げられた視点だけを鑑定に織り込む。指定がないものは使わない。タロットが常に主軸であり、他の視点はタロットの読み解きを裏づけ・補強する形で自然に溶け込ませる。占術ごとに機械的に章を分けすぎず、鑑定書全体が一つの読み物として自然につながるようにする。
+
+・心理学の視点：恋愛心理・愛着スタイル・感情のメカニズムなどカウンセラー的な観点から、相談者やお相手の気持ちの背景・行動の理由を言語化する。専門用語を並べ立てず、やわらかい言葉で。医学的・診断的な断定はしない。
+
+・生年月日からの性格・恋愛傾向：入力された生年月日から読み取れる、生まれ持った性格傾向・恋愛のクセ・二人の相性の傾向を、タロットの流れと矛盾しないよう自然に織り込む。星座や数秘などの用語を羅列せず、「〇〇さんは本来こういう気質を持っている方」という形で穏やかに伝える。生年月日が未入力の場合はこの視点は省略し、その旨を無理に説明しない。
+
+・西洋占星術（星座）の視点：入力された生年月日から太陽星座を割り出し、その星座の恋愛傾向・愛し方のクセ・大切にしたい距離感を、タロットの流れに重ねて伝える。星座の変わり目（前後1日程度）の生まれの場合は断定せず「〇〇座寄りの気質」とやわらかく表現する。生まれた時間・場所が不明な場合、月星座・アセンダント・ハウスなど出生図の詳細には踏み込まない。相談者とお相手の両方の生年月日がある場合は、星座同士の相性の傾向にも触れてよい。生年月日が未入力の場合はこの視点は省略する。
+
+・数秘術の視点：生年月日の数字をすべて足して一桁になるまで計算した「運命数」（11・22・33になった場合はマスターナンバーとしてそのまま扱う）をもとに、恋愛での行動パターン・愛情表現のクセ・大切にしたい価値観を読み解く。計算は内部で丁寧に確認し、鑑定書には途中式を書かず、結果だけを自然に織り込む。相談者とお相手の両方の生年月日がある場合は、運命数の組み合わせから相性の傾向に触れてよい。生年月日が未入力の場合はこの視点は省略する。
+
+・四柱推命の要素：
+　- 入力に【命式】が与えられている場合は、その命式（年柱・月柱・日柱など）をそのまま正として使い、計算し直さない。
+　- 命式が与えられておらず生年月日がある場合のみ、生年月日（と分かれば生まれた時間）から命式を推定する。節入り（月の変わり目）前後は誤差が出やすいことを踏まえ、断定的に言い切らず「〇〇の傾向が感じられます」というトーンにする。
+　- 日柱の十干（日主）を、その人の本質・気質の軸として読み解く。五行（木火土金水）のバランスや、相談者とお相手の相性の傾向を、恋愛の文脈に落とし込んで伝える。
+　- 専門用語（十干十二支・通変星など）を使う場合は、必ず意味を一言添える。用語の解説だけで終わらせず、必ず「だから恋愛ではこう出やすい」という具体的な読み解きにつなげる。
+　- 生年月日も命式も未入力の場合は、四柱推命の要素は省略する。
+
+これらの視点を複数取り入れる場合、それぞれをバラバラに述べるのではなく、「タロットのカードが示す流れ」と「生まれ持った気質」と「心の動き」が響き合うように統合して伝える。必要に応じて【生まれ持った気質と恋愛の傾向について】のような項目を1つ加えてよいが、相談内容から離れすぎないこと。取り入れる視点が3つ以上ある場合は、すべての占術を均等に説明しようとせず、相談内容に最も関係の深い気づきだけを選んで使うこと。占術の説明が相談への答えより多くなってはならない。
+
+# 鑑定文の締め（最重要・厳守）
+鑑定書の最後は、必ず以下の文章のみを使用する。
+「以上が鑑定結果となります。
+ご不明な点がありましたら遠慮なくお知らせください。」
+※「以上が鑑定結果となりますので、ご確認をお願いします。」という文言は使用しない。過去の表現・類似表現・言い換え表現も一切禁止する。
+
+# 次の鑑定のご提案（相談者向け）
+上記の締め文の直後にのみ表示すること。鑑定書本文・納品文とは明確に区別し、押し売りや不安を煽る表現は一切使用しない。
+今回の鑑定結果を踏まえ、もし相談者が「もう少し整理したい」「別の角度から見てみたい」と感じた場合に検討できる鑑定として、必要がある場合のみ、最大3件まで提案する。
+- 提案は短く、やさしく、落ち着いた文章でまとめる
+- 「選ぶかどうかは相談者の自由」であるニュアンスを必ず含める
+
+提案の形式：
+🌸 もし〇〇さんが、
+・〇〇の部分をもう少し整理したいと感じた場合
+・〇〇について深く知りたくなった場合
+
+このような鑑定もご用意できます。
+
+・（鑑定名）〇〇を見る鑑定
+　→ 内容：〇〇に焦点を当てて読み解く鑑定です。
+
+※あくまでご提案ですので、必要だと感じたタイミングで大丈夫です。
+
+# 相談者向け追加鑑定のご案内（提案３）
+操作者から「提案３」と入力された場合のみ実行する。
+今回の相談内容と鑑定結果をもとに、相談者が「次はこれをお願いしたい」と自然に感じる追加鑑定のご案内文を作成する。
+
+- 出力は、鑑定書の納品後に相談者へそのまま送れる1通のメッセージ形式にする（操作者向けメモの文体にしない）
+- 提案は必ず3件。今回の鑑定で深掘りしなかった点や、相談者が一番気にしていた点を起点に、それぞれ切り口を変える
+- 各提案には以下を含める：
+　・鑑定名（20字以内。商品タイトルとしてそのまま使える形）
+　・この鑑定でわかること（1〜2行）
+　・今回の鑑定結果との繋がり（「今回、◯◯という流れが出ていましたので…」のように、相談者の状況・鑑定内容に合わせて必ず個別化する。定型文は禁止）
+- 相談者の「今いちばん知りたいこと」「今回の鑑定で気になった続き」に直結した、具体的な提案にする
+- 押し売り・不安を煽る表現・急かす表現は禁止。あくまで「ご興味があれば」の姿勢を保つ
+- 締めには、選ぶかどうかは相談者の自由であることをやさしく添える
+
+# 操作者向け追提案機能（提案５）
+操作者から「提案５」と入力された場合のみ実行する。以下は鑑定書本文・相談者向け提案には含めない。
+- 相談者の関係性、占いテーマ、鑑定内容から深掘り余地があった点を起点に作成する
+- 「タイトル（20字以内）／内容の焦点（1行）／おすすめ理由（1行）」の形式で5件出力する
+- 不安を煽らず、前向きで実用的な次回導線とする
+- 操作者の販売準備用メモとして出力する（相談者向けの文体にしない）`;
+
+const $ = (id) => document.getElementById(id);
+const output = $("output");
+const statusEl = $("status");
+const generateBtn = $("generateBtn");
+const copyBtn = $("copyBtn");
+
+/* ---------- モード切替 ---------- */
+document.querySelectorAll('input[name="mode"]').forEach((r) => {
+  r.addEventListener("change", () => {
+    const fixed = document.querySelector('input[name="mode"]:checked').value === "fixed";
+    $("themeField").style.display = fixed ? "block" : "none";
+    $("contentLabel").innerHTML = fixed
+      ? '今回のご相談内容 <small>（テーマに関する背景や、今気になっていること）</small>'
+      : '占ってほしい内容 <small>（できるだけ具体的に）</small>';
+    saveForm();
+  });
+});
+
+/* ---------- フォームの保存・復元 ---------- */
+const FORM_IDS = ["theme", "cname", "cgender", "cage", "cbirth", "cbtime", "pname", "pgender", "page_", "pbirth", "pbtime", "relation", "content", "mPsych", "mBirth", "mAstro", "mNumero", "mShichu", "meishiki", "cardnames"];
+function saveForm() {
+  const data = {
+    mode: document.querySelector('input[name="mode"]:checked').value,
+    volume: document.querySelector('input[name="volume"]:checked').value
+  };
+  FORM_IDS.forEach((id) => {
+    const el = $(id);
+    data[id] = el.type === "checkbox" ? el.checked : el.value;
+  });
+  localStorage.setItem(FORM_STORAGE, JSON.stringify(data));
+}
+function restoreForm() {
+  try {
+    const data = JSON.parse(localStorage.getItem(FORM_STORAGE) || "{}");
+    if (data.mode) {
+      document.querySelector(`input[name="mode"][value="${data.mode}"]`).checked = true;
+      document.querySelector('input[name="mode"]:checked').dispatchEvent(new Event("change"));
+    }
+    if (data.volume) {
+      const v = document.querySelector(`input[name="volume"][value="${data.volume}"]`);
+      if (v) v.checked = true;
+    }
+    FORM_IDS.forEach((id) => {
+      if (!(id in data)) return;
+      const el = $(id);
+      if (el.type === "checkbox") el.checked = data[id];
+      else el.value = data[id];
+    });
+  } catch (_) { /* 破損時は無視 */ }
+}
+document.querySelectorAll("input, textarea, select").forEach((el) => {
+  el.addEventListener("change", saveForm);
+});
+restoreForm();
+
+/* ---------- ユーティリティ ---------- */
+function setStatus(msg, kind) {
+  statusEl.textContent = msg;
+  statusEl.className = "status" + (kind ? " " + kind : "");
+}
+function val(id) { return $(id).value.trim(); }
+function orBlank(s) { return s || "（未入力）"; }
+
+function themeList() {
+  return val("theme").split("\n").map((s) => s.trim()).filter(Boolean);
+}
+function updateThemeCount() {
+  const n = themeList().length;
+  const el = $("themeCount");
+  if (n === 0) { el.textContent = ""; }
+  else {
+    el.textContent = "✓ " + n + "件のテーマが入力されています（鑑定書に" + n + "つの項目が作られます）";
+    el.style.color = "var(--ok)";
+  }
+}
+$("theme").addEventListener("input", updateThemeCount);
+updateThemeCount();
+
+/* 四柱推命チェックで命式欄を表示 */
+function updateShichuField() {
+  $("shichuField").style.display = $("mShichu").checked ? "block" : "none";
+}
+$("mShichu").addEventListener("change", updateShichuField);
+updateShichuField();
+
+/* 視点の選びすぎ・生年月日未入力への軽い注意 */
+const VIEW_IDS = ["mPsych", "mBirth", "mAstro", "mNumero", "mShichu"];
+const BIRTH_VIEW_IDS = ["mBirth", "mAstro", "mNumero", "mShichu"];
+function updateViewsNote() {
+  const notes = [];
+  const count = VIEW_IDS.filter((id) => $(id).checked).length;
+  if (count >= 3) {
+    notes.push("⚠️ 視点が" + count + "つ選ばれています。多いと1つ1つの読み解きが浅くなりやすいので、視点を絞るか、ボリュームを「フル」にするのがおすすめです。");
+  }
+  const needsBirth = BIRTH_VIEW_IDS.some((id) => $(id).checked);
+  if (needsBirth && !val("cbirth")) {
+    notes.push("🎂 生年月日を使う視点がオンですが、相談者さまの生年月日が未入力です。入力すると鑑定に反映されます。");
+  }
+  $("viewsNote").textContent = notes.join("\n");
+}
+VIEW_IDS.forEach((id) => $(id).addEventListener("change", updateViewsNote));
+$("cbirth").addEventListener("input", updateViewsNote);
+updateViewsNote();
+
+function buildUserPrompt() {
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  const volume = document.querySelector('input[name="volume"]:checked').value;
+  const withCards = $("cardnames").checked;
+  const lines = [];
+  lines.push("以下の内容で、恋愛タロット鑑定書を作成してください。");
+  lines.push("");
+  lines.push("【占い方】" + (mode === "fixed"
+    ? "商品に設定している固定のテーマで占う"
+    : "相談者の占ってほしい事に沿って占う"));
+  if (mode === "fixed") {
+    const themes = themeList();
+    lines.push("【占いテーマ】全" + themes.length + "件");
+    themes.forEach((t, i) => lines.push("　テーマ" + (i + 1) + "：" + t));
+    lines.push("※上記のテーマ1件ごとに、必ず【〇〇について】の見出しを立てて鑑定してください。テーマの省略・統合・順番の入れ替えは禁止です。");
+  }
+  lines.push("【相談者のお名前】" + orBlank(val("cname")));
+  lines.push("【相談者の性別】" + orBlank(val("cgender")));
+  lines.push("【相談者の年齢】" + orBlank(val("cage")));
+  if (val("cbirth")) lines.push("【相談者の生年月日】" + val("cbirth") + (val("cbtime") ? "（生まれた時間：" + val("cbtime") + "）" : ""));
+  lines.push("【お相手のお名前】" + orBlank(val("pname")));
+  lines.push("【お相手の性別】" + orBlank(val("pgender")));
+  lines.push("【お相手の年齢】" + orBlank(val("page_")));
+  if (val("pbirth")) lines.push("【お相手の生年月日】" + val("pbirth") + (val("pbtime") ? "（生まれた時間：" + val("pbtime") + "）" : ""));
+  lines.push("【お二人のご関係】" + orBlank(val("relation")));
+  lines.push("【ご相談内容】" + orBlank(val("content")));
+
+  const views = ["タロット（主軸）"];
+  if ($("mPsych").checked) views.push("心理学の視点");
+  if ($("mBirth").checked) views.push("生年月日からの性格・恋愛傾向");
+  if ($("mAstro").checked) views.push("西洋占星術（星座）の視点");
+  if ($("mNumero").checked) views.push("数秘術の視点");
+  if ($("mShichu").checked) views.push("四柱推命の要素");
+  lines.push("【取り入れる視点】" + views.join("、"));
+  if ($("mShichu").checked && val("meishiki")) {
+    lines.push("【命式（この命式をそのまま正として使用。計算し直さないこと）】");
+    lines.push(val("meishiki"));
+  }
+
+  lines.push("【ご希望の鑑定ボリューム】" + volume);
+  lines.push("【カード名の併記】" + (withCards ? "する（各項目でカード名を併記してください）" : "しない（カード名は明示せず象徴として溶け込ませる）"));
+  return lines.join("\n");
+}
+
+function buildFullPrompt(userPrompt) {
+  return SYSTEM_PROMPT
+    + "\n\n＝＝＝＝＝＝＝＝＝＝\n"
+    + "以下が今回の鑑定依頼です。上記のルールに厳密に従って、鑑定書を出力してください。\n"
+    + "（このメッセージへの返信は、鑑定書のみとし、前置きや確認の質問は不要です）\n"
+    + "＝＝＝＝＝＝＝＝＝＝\n\n"
+    + userPrompt;
+}
+
+/* ---------- プロンプトの生成 ---------- */
+generateBtn.addEventListener("click", () => {
+  if (!val("cname")) { setStatus("相談者のお名前を入力してください（ニックネーム可）。", "error"); $("cname").focus(); return; }
+  if (!val("content")) { setStatus("ご相談内容を入力してください。", "error"); $("content").focus(); return; }
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  if (mode === "fixed" && themeList().length === 0) { setStatus("固定テーマで占う場合は、占いテーマを1行に1つずつ入力してください。", "error"); $("theme").focus(); return; }
+  saveForm();
+
+  const userPrompt = buildUserPrompt();
+  output.textContent = buildFullPrompt(userPrompt);
+  copyBtn.disabled = false;
+  $("copyOpenGptBtn").disabled = false;
+  $("copyOpenClaudeBtn").disabled = false;
+  $("freeSteps").style.display = "block";
+  setStatus("✦ プロンプトが編めました。「コピーしてChatGPTを開く」を押してください。", "ok");
+});
+
+/* ---------- コピー ---------- */
+async function copyText(text, doneMsg) {
+  try {
+    await navigator.clipboard.writeText(text);
+    setStatus(doneMsg, "ok");
+  } catch (_) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    setStatus(doneMsg, "ok");
+  }
+}
+copyBtn.addEventListener("click", () => copyText(
+  output.textContent,
+  "コピーしました。ChatGPTまたはClaudeに貼り付けて送信してください。"
+));
+
+async function copyAndOpen(url, siteName) {
+  if (!output.textContent) return;
+  await copyText(output.textContent, "コピーしました。" + siteName + "が開いたら、貼り付けて送信してください。");
+  const w = window.open(url, "_blank");
+  if (!w) {
+    setStatus("コピーは完了しています。ポップアップがブロックされたため、" + siteName + "はご自身で開いて貼り付けてください。", "ok");
+  }
+}
+$("copyOpenGptBtn").addEventListener("click", () => copyAndOpen("https://chatgpt.com/", "ChatGPT"));
+$("copyOpenClaudeBtn").addEventListener("click", () => copyAndOpen("https://claude.ai/new", "Claude"));
+
+/* ---------- 納品前チェック ---------- */
+const VOLUME_RANGES = { "ライト": [800, 1000], "スタンダード": [1000, 1500], "フル": [1500, 2000] };
+
+$("checkBtn").addEventListener("click", () => {
+  const raw = $("checkInput").value;
+  const resultsBox = $("checkResults");
+  resultsBox.textContent = "";
+  if (!raw.trim()) {
+    addCheckItem(resultsBox, "warn", "⚠️", "鑑定書がまだ貼り付けられていません。AIが出力した鑑定書を上の欄に貼り付けてください。");
+    return;
+  }
+  const squash = (s) => s.replace(/[\s　]/g, "");
+  const norm = squash(raw);
+
+  const opening = squash("お待たせいたしました。鑑定が終わりましたので、結果を送付させていただきます。ご確認をお願いします。");
+  if (norm.includes(opening)) {
+    addCheckItem(resultsBox, "ok", "✓", "冒頭の固定文が正しく入っています。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "冒頭の固定文（お待たせいたしました。鑑定が終わりましたので…）が見つかりません。追加してから納品しましょう。");
+  }
+
+  if (/🔮[^\n]*鑑定書[^\n]*🔮/.test(raw)) {
+    addCheckItem(resultsBox, "ok", "✓", "鑑定書の題名（🔮…鑑定書…🔮）が入っています。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "題名（🔮恋愛タロット鑑定書 ～〇〇さん～🔮 の形式）が見つかりません。");
+  }
+
+  const headings = raw.match(/【[^【】\n]+について】/g) || [];
+  if (headings.length > 0) {
+    addCheckItem(resultsBox, "ok", "✓", "【〇〇について】形式の見出しが" + headings.length + "件入っています。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "【〇〇について】形式の見出しが見つかりません。項目ごとの見出しを付けましょう。");
+  }
+
+  const closing = squash("以上が鑑定結果となります。ご不明な点がありましたら遠慮なくお知らせください。");
+  const banned = squash("以上が鑑定結果となりますので、ご確認をお願いします");
+  if (norm.includes(banned)) {
+    addCheckItem(resultsBox, "warn", "⚠️", "使用禁止の締め文「以上が鑑定結果となりますので、ご確認をお願いします。」が使われています。正しい締め文に直してください。");
+  } else if (norm.includes(closing)) {
+    addCheckItem(resultsBox, "ok", "✓", "締めの固定文が正しく入っています。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "締めの固定文（以上が鑑定結果となります。ご不明な点がありましたら遠慮なくお知らせください。）が見つかりません。");
+  }
+
+  const anataCount = (raw.match(/あなた/g) || []).length;
+  if (anataCount === 0) {
+    addCheckItem(resultsBox, "ok", "✓", "「あなた」という呼びかけは使われていません。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "「あなた」が" + anataCount + "回使われています。相談者さまのお名前に直しましょう。");
+  }
+
+  const kanarazu = (raw.match(/必ず/g) || []).length;
+  const zettai = (raw.match(/絶対/g) || []).length;
+  if (kanarazu + zettai === 0) {
+    addCheckItem(resultsBox, "ok", "✓", "断定表現（必ず・絶対）は使われていません。");
+  } else {
+    addCheckItem(resultsBox, "warn", "⚠️", "断定表現が見つかりました（「必ず」" + kanarazu + "回／「絶対」" + zettai + "回）。穏やかな表現への言い換えを検討してください。");
+  }
+
+  if (/(^|\n)\s*#|\*\*|---|＝＝＝|⸻/.test(raw)) {
+    addCheckItem(resultsBox, "warn", "⚠️", "マークダウン記号や罫線らしき記号（#、**、---、＝＝＝ など）が混ざっています。プレーンな文章に整えましょう。");
+  } else {
+    addCheckItem(resultsBox, "ok", "✓", "マークダウン記号・罫線の混入はありません。");
+  }
+
+  const cname = val("cname");
+  if (cname) {
+    if (raw.includes(cname)) {
+      addCheckItem(resultsBox, "ok", "✓", "相談者さまのお名前（" + cname + "）が本文に入っています。");
+    } else {
+      addCheckItem(resultsBox, "info", "ℹ️", "フォームの相談者名（" + cname + "）が本文に見当たりません。別の方の鑑定書をチェックしている場合は問題ありません。");
+    }
+  }
+
+  const len = norm.length;
+  const volume = document.querySelector('input[name="volume"]:checked').value;
+  const range = VOLUME_RANGES[volume];
+  let lenMsg = "文字数：約" + len + "文字（空白除く・提案部分も含む全体）。選択中の「" + volume + "」の目安は" + range[0] + "〜" + range[1] + "文字です。";
+  if (len > range[1]) lenMsg += " 目安より長めですが、内容が濃い分には無理に削る必要はありません。";
+  else if (len < range[0]) lenMsg += " 目安より短めです。物足りなさがないか、読み返して確認してみてください。";
+  else lenMsg += " 目安の範囲内です。";
+  addCheckItem(resultsBox, "info", "ℹ️", lenMsg);
+
+  setStatus("✦ チェックが完了しました。⚠️の項目を直したら、最後にご自身の言葉で読み返してから納品してください。", "ok");
+});
+
+function addCheckItem(box, cls, icon, msg) {
+  const div = document.createElement("div");
+  div.className = "check-item " + cls;
+  div.textContent = icon + " " + msg;
+  box.appendChild(div);
+}
+</script>
+</body>
+</html>
