@@ -26,8 +26,12 @@ AI占いコンサルの購入者特典などとして配れます。
 
 ## 2. 自分のGitHubに公開する
 
+> このフォルダは、お渡しした **`koiyomi.zip` を展開したもの**です。
+> Zipの置き場所でClaude Codeを開き、「このZipを展開して、中の HANDOFF.md の通りに進めて」と伝えれば、
+> 解凍から公開まで進めてくれます（Claude Code は `unzip` で展開できます）。
+
 ### Claude Code に頼む場合（推奨）
-> 「このフォルダを私のGitHubに `koi-tarot-atelier` という公開リポジトリで作成して、
+> 「この（展開した）フォルダを私のGitHubに `koi-tarot-atelier` という公開リポジトリで作成して、
 >  GitHub Pages（mainブランチ / ルート）を有効化して、公開URLを教えて」
 
 ### 手動でやる場合の参考コマンド
